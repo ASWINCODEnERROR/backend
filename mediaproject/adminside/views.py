@@ -14,11 +14,31 @@ from .serializers import ProductsSerializer
 from rest_framework import generics
 from .models import Products, ProductVariant
 from .serializers import ProductsSerializer, ProductVariantSerializer
-
+from authentication.serializers import UserSerializer
 # Create your views here.
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+
+# class CustomTokenObtainPairView(TokenObtainPairView):
+#     print("<<<<<<<<<<<<<<<<<<<<<<<<<<entering>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+#     def post(self, request, *args, **kwargs):
+#         print("<<<<<<<<<<<<<<<<<<<<<<<<<<entering -00>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+#         response = post(request, *args, **kwargs)
+#         serializer = self.get_serializer(data=request.data)
+#         print("<<<<<<<<<<<<<<<<<<<<<<<<<<entering>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.user
+#         refresh = RefreshToken.for_user(user)
+#         access_token = str(response.data['access'])
+#         print("<<<<<<<<<<<<<<<<<<<<<<<<<<entering>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+#         user_serializer = UserSerializer(user)
+#         response.data['user'] = user_serializer.data  # Include serialized data, not the serializer object
+#         return response
 
 
 class ProductListCreateView(generics.ListCreateAPIView):
@@ -218,3 +238,6 @@ class DecrementStockView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Stock is already zero"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ******************************************************************************************************
