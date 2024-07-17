@@ -10,11 +10,19 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import Products
 from .serializers import ProductsSerializer
-
+from django.db.models import F
 from rest_framework import generics
 from .models import Products, ProductVariant
 from .serializers import ProductsSerializer, ProductVariantSerializer
 from authentication.serializers import UserSerializer
+from .serializers import SizeOptionSerializer, ColorOptionSerializer
+from django.db import transaction
+from django.db.models import Sum
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from .models import Products 
+import uuid
+
 # Create your views here.
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -91,7 +99,6 @@ class ProductVariantCreateView(generics.CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
-from .serializers import SizeOptionSerializer, ColorOptionSerializer
 
 class SizeOptionListView(generics.ListAPIView):
     queryset = SizeOption.objects.all()
@@ -103,8 +110,7 @@ class ColorOptionListView(generics.ListAPIView):
 
 
 
-from django.db import transaction
-from django.db.models import Sum
+
 
 class ProductVariantBulkCreateView(generics.CreateAPIView):
     queryset = ProductVariant.objects.all()
@@ -174,10 +180,7 @@ class ProductVariantBulkCreateView(generics.CreateAPIView):
 class ProductListView(generics.ListAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductDetailSerializer
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from .models import Products 
-import uuid
+
 
 def product_detail_view(request, productId):
     try:
@@ -217,7 +220,6 @@ def product_detail_view(request, productId):
     }
     return JsonResponse(data)
 
-from django.db.models import F
 
 class DecrementStockView(APIView):
     

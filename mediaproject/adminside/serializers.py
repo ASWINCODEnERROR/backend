@@ -3,6 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework import serializers
+from .models import Products, ProductVariant, SizeOption, ColorOption
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -12,8 +14,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['id']=user.id
      
         return data
-from rest_framework import serializers
-from .models import Products, ProductVariant, SizeOption, ColorOption
+
 
 class SizeOptionSerializer(serializers.ModelSerializer):
     class Meta:
